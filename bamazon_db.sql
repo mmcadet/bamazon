@@ -11,4 +11,4 @@ CREATE TABLE products(
  	primary key(item_id)
  );
 
-SELECT * FROM bamazonproducts.csv;
+SELECT * FROM bamazonProducts.csv;
