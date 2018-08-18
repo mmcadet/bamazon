@@ -17,12 +17,12 @@ function start(){
 
 connection.query('SELECT * FROM products', function(err, res){
 	if(err) throw err;
-	console.log('WELCOME to Shopping at Bobmazon')
-	console.log('--------------------------------------------------------------------------------------')
+	console.log('Hello, Welcome to Bamazon!')
+	console.log('----------------------------------------')
 
 	for(var i = 0; i<res.length;i++){
-	console.log("ID: "+ res[i].ItemID + " | " + "Product: " + res[i].ProductName + " | " + "Department: " + res[i].DepartmentName + " | " + "Price: " +res[i].Price + " | " + "Quantity: " + res[i].StockQuantity);
-	console.log('--------------------------------------------------------------------------------------')
+	console.log("ID: "+ res[i].ItemID + " | " + "Product: " + res[i].ProductName + " | " + "Department: " + res[i].DepartmentName + " | " + "Price: " + res[i].Price + " | " + "Quantity: " + res[i].StockQuantity);
+	console.log('----------------------------------------')
 }
 
 // PURCHASE QUESTIONS //
@@ -100,7 +100,7 @@ function reprompt(){
 		if(ans.reply){
 			start();
 		} else{
-			console.log("Later, please come on back to Bobmazon soon");
+			console.log("Thank you, please come again!");
 		}
 	});
 }

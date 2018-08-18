@@ -2,7 +2,7 @@ CREATE DATABASE bamazon_db;
 
 USE bamazon_db;
 
-CREATE TABLE products(
+CREATE TABLE Products(
 	item_id INTEGER AUTO_INCREMENT PRIMARY KEY,
  	product_name VARCHAR(100) NOT NULL,
  	department_name VARCHAR(100) NOT NULL,
