@@ -9,21 +9,21 @@ var connection = mysql.createConnection({
 	user: "root",
 	password: "housebed14",
 	database: "bamazon_db"
-})
+});
 
 function start(){
 
 // ITEMS for SALE //
 
-connection.query('SELECT * FROM products', function(err, res){
+connection.query('SELECT * FROM Products', function(err, res){
 	if(err) throw err;
 	console.log('Hello, Welcome to Bamazon!')
 	console.log('----------------------------------------')
 
-	for(var i = 0; i<res.length;i++){
-	console.log("ID: "+ res[i].ItemID + " | " + "Product: " + res[i].ProductName + " | " + "Department: " + res[i].DepartmentName + " | " + "Price: " + res[i].Price + " | " + "Quantity: " + res[i].StockQuantity);
+	for(var i = 0; i < res.length; i++) {
+	console.log("ID: " + parseInt(res[i].item_id) + " | " + "Product: " + res[i].product_name + " | " + "Department: " + res[i].department_name + " | " + "Price: " + parseFloat(res[i].price) + " | " + "Quantity: " + parseInt(res[i].stock_quantity));
 	console.log('----------------------------------------')
-}
+	}	
 
 // PURCHASE QUESTIONS //
 
@@ -34,7 +34,7 @@ inquirer.prompt([
 		name: "id",
 		message: "Item ID for purchase?",
 		validate: function(value){
-			if(isNaN(value) == false && parseInt(value) <= res.length && parseInt(value) > 0){
+			if(isNaN(value) == false && parseInt(value) <= res.length && parseInt(value) > 0) {
 				return true;
 			} else{
 				return false;
@@ -43,7 +43,7 @@ inquirer.prompt([
 	    },
 	  {
 		type: "input",
-		name: "qty",
+		name: "amount",
 		message: "Amount you need to purchase?",
 		validate: function(value){
 			if(isNaN(value)){
@@ -58,25 +58,25 @@ inquirer.prompt([
 
 ]).then(function(ans){
 	var buyWhat = (ans.id)-1;
-	var buyHowMuch = parseInt(ans.qty);
-	var finalTotal = parseFloat(((res[buyWhat].Price)*buyHowMuch).toFixed(2));
+	var buyHowMuch = parseInt(ans.amount);
+	var finalTotal = parseFloat(((res[buyWhat].price)*buyHowMuch).toFixed(2));
 
 // STOCK AVAILABLE //
 
-	if(res[buyWhat].StockQuantity >= buyHowMuch){
+	if(res[buyWhat].stock_quantity >= buyHowMuch){
 		connection.query("UPDATE Products SET ? WHERE ?", [
-			{StockQuantity: (res[buyWhat].StockQuantity - buyHowMuch)},
-			{ItemID: ans.id}
+			{stock_quantity: (res[buyWhat].stock_quantity - buyHowMuch)},
+			{item_id: ans.id}
 			], function(err, result){
 				if(err) throw err;
-				console.log("Purchase Complete! Your purchase price is $" + finalTotal.toFixed(2) + ". Items ship soon. Thanks for shopping at Bobmazon");
+				console.log("\nThank you for your purchase! Your total price is $" + finalTotal.toFixed(2) + ". Thanks for shopping at Bamazon!\n");
 			});
 
 		connection.query("SELECT * FROM Products", function(err, deptRes){
 			if(err) throw err;
 			var index;
 			for(var i = 0; i < deptRes.length; i++){
-				if(deptRes[i].DepartmentName === res[buyWhat].DepartmentName){
+				if(deptRes[i].department_name === res[buyWhat].department_name){
 					index = i;
 				}
 			}
